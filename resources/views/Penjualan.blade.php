@@ -2,6 +2,7 @@
 @include('layouts.aside')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+    @if ($role === 'admin')
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -11,6 +12,18 @@
             </div>
         </div>
     </div>
+    @endif
+    @if ($role === 'customer')
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Pembelian</h1>
+                </div><!-- /.col -->
+            </div>
+        </div>
+    </div>
+    @endif
 
     <!-- Main content -->
     <div class="content">
@@ -19,9 +32,16 @@
                 <!-- /.col-md-6 -->
                 <div class="col-lg-12">
                     <div class="card">
+                        @if ($role === 'admin')
                         <div class="card-header">
                             <h3 class="card-title">Kelola Data {{ $title }}</h3>
                         </div>
+                        @endif
+                        @if ($role === 'customer')
+                        <div class="card-header">
+                            <h3 class="card-title">Kelola Data Pembelian</h3>
+                        </div>
+                        @endif
                         <div class="card-body">
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead class="text-center">

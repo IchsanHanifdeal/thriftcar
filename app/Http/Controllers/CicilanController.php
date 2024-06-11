@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cicilan;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class CicilanController extends Controller
@@ -16,12 +17,13 @@ class CicilanController extends Controller
 
         if ($role === 'customer') {
             $idUser = auth()->id();
-
             $cicilan = Cicilan::whereHas('customer', function ($query) use ($idUser) {
                 $query->where('id_user', $idUser);
             })->get();
+            $customers = Customer::where('id_user', $idUser)->get();
         } else {
-            $cicilan = Cicilan::all();
+            $cicilan = Cicilan::with('customer')->get();
+            $customers = Customer::all();
         }
 
         return view('cicilan', [
@@ -29,8 +31,11 @@ class CicilanController extends Controller
             'active' => 'cicilan',
             'cicilan' => $cicilan,
             'role' => $role,
+            'customers' => $customers,
         ]);
     }
+
+
 
     /**
      * Show the form for creating a new resource.

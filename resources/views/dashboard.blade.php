@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">{{ $title }} | Pembelian Mobil</h1>
+                        <h1 class="m-0">Pembelian Mobil</h1>
                     </div><!-- /.col -->
                 </div>
             </div>

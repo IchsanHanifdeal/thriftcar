@@ -23,6 +23,19 @@
                             <h3 class="card-title">Kelola Data {{ $title }}</h3>
                         </div>
                         <div class="card-body">
+                            @if ($role === 'admin')
+                                <div class="form-group">
+                                    <label for="customerDropdown">Pilih Nama Customer:</label>
+                                    <select id="customerDropdown" class="form-control">
+                                        <option value="">Semua</option>
+                                        @foreach ($customers as $customer)
+                                            <option value="{{ $customer->nama_lengkap }}">
+                                                {{ ucfirst($customer->nama_lengkap) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
+
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead class="text-center">
                                     <tr>
@@ -37,15 +50,15 @@
                                         <th class="no-export">Opsi</th>
                                     </tr>
                                 </thead>
-                                <tbody class="text-center">
+                                <tbody class="text-center" id="installmentTableBody">
                                     @if ($cicilan->isEmpty())
                                         <tr>
-                                            <td colspan="8" class="text-center label label-danger">Data
+                                            <td colspan="9" class="text-center label label-danger">Data
                                                 {{ $title }} tidak ada</td>
                                         </tr>
                                     @else
                                         @foreach ($cicilan as $key => $c)
-                                            <tr>
+                                            <tr data-customer="{{ ucfirst($c->customer->nama_lengkap) }}">
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ ucfirst($c->customer->nama_lengkap) }}</td>
                                                 @php
@@ -243,3 +256,23 @@
 </div>
 <!-- /.content-wrapper -->
 @include('layouts.footer')
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const customerDropdown = document.getElementById('customerDropdown');
+        const tableBody = document.getElementById('installmentTableBody');
+        const rows = tableBody.querySelectorAll('tr[data-customer]');
+
+        customerDropdown.addEventListener('change', function() {
+            const selectedCustomer = this.value.toLowerCase();
+            rows.forEach(row => {
+                const customerName = row.getAttribute('data-customer').toLowerCase();
+                if (selectedCustomer === '' || customerName === selectedCustomer) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>

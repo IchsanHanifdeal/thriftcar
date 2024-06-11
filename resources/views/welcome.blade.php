@@ -71,23 +71,23 @@
         <div class="introduction-text">
             <h1>Selamat Datang di <span>{{ config('app.name') }}</span> </h1>
             <p>Kami bangga menawarkan Anda pengalaman terbaik untuk memilih mobil yang sempurna. Apakah Anda sedang
-                mencari yang baru atau bekas kendaraan, kami siap membantu Anda mengambil keputusan yang tepat.</p>
+                mencari kendaraan yang baru?, kami siap membantu Anda mengambil keputusan yang tepat.</p>
         </div>
     </div>
     <div class="container">
         <div class="about-us">
             <div class="info-box" id="tentang">
                 <h2>Tentang Kami</h2>
-                <p>Dalam pameran kami, Anda akan menemukan beragam mobil dari berbagai merek dan kategori. Kami selalu
+                <p>Dalam showroom kami, Anda akan menemukan beragam mobil dari berbagai merek dan kategori. Kami selalu
                     berusaha untuk menyediakan
                     penawaran dan layanan terbaik kepada pelanggan kami yang berharga.
 
-                    Nikmati menjelajahi pameran kami, dan jangan ragu untuk menanyakan tentang mobil apa pun yang
+                    Nikmati menjelajahi showroom kami, dan jangan ragu untuk menanyakan tentang mobil apa pun yang
                     menarik minat Anda.
                     Kami di sini untuk melayani
                     Anda dan jadikan pengalaman Anda luar biasa.
 
-                    Terima kasih telah berkunjung, dan kami nantikan kedatangan Anda di pameran kami</p>
+                    Terima kasih telah berkunjung, dan kami nantikan kedatangan Anda di showroom kami</p>
             </div>
             <div class="img-box">
                 @if($mobils->isNotEmpty())
@@ -120,7 +120,7 @@
     </div>
     <div class="gallery" id="galeri">
         <div class="container">
-            <h2>Mobil bekas bergaransi</h2>
+            <h2>Mobil Baru bergaransi</h2>
             <div class="img-box">
                 @foreach ($mobils as $mobil)
                     <img src="{{ asset('storage/' . $mobil->gambar) }}" alt="{{ $mobil->nama_mobil }}">

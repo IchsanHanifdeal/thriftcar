@@ -18,6 +18,7 @@
                     <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
                     <li class="nav-header">Home</li>
+                    @if ($role === 'admin')
                     <li class="nav-item">
                         <a href="{{ route('dashboard') }}"
                             class="nav-link {{ $active === 'dashboard' ? ' active' : '' }}">
@@ -27,6 +28,18 @@
                             </p>
                         </a>
                     </li>
+                    @endif
+                    @if ($role === 'customer')
+                    <li class="nav-item">
+                        <a href="{{ route('dashboard') }}"
+                            class="nav-link {{ $active === 'dashboard' ? ' active' : '' }}">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Pembelian Mobil
+                            </p>
+                        </a>
+                    </li>
+                    @endif
                     @if ($role === 'admin')
                         <li class="nav-header">Data</li>
                         <li class="nav-item">
