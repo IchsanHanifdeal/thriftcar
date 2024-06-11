@@ -99,7 +99,7 @@
                                         <!-- small box -->
                                         <div class="small-box bg-secondary">
                                             <div class="inner">
-                                                <h3>{{ date('Y-m-d') }}</h3>
+                                                <h3>{{ $currentDate }}</h3>
 
                                                 <p>Tanggal</p>
                                             </div>
@@ -164,7 +164,8 @@
                                         <!-- small box -->
                                         <div class="small-box bg-secondary">
                                             <div class="inner">
-                                                <h3>{{ 'Rp ' . number_format($totalPenjualanHariIni, 0, ',', '.') }}</h3>
+                                                <h3>{{ 'Rp ' . number_format($totalPenjualanHariIni, 0, ',', '.') }}
+                                                </h3>
 
                                                 <p>Total Penjualan Hari Ini</p>
                                             </div>
@@ -177,7 +178,8 @@
                                         <!-- small box -->
                                         <div class="small-box bg-secondary">
                                             <div class="inner">
-                                                <h3>{{ 'Rp ' . number_format($totalPenjualanBulanIni, 0, ',', '.') }}</h3>
+                                                <h3>{{ 'Rp ' . number_format($totalPenjualanBulanIni, 0, ',', '.') }}
+                                                </h3>
 
                                                 <p>Total Penjualan Bulan Ini</p>
                                             </div>

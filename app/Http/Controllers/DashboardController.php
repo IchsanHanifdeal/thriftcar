@@ -15,6 +15,9 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
+        Carbon::setLocale('id');
+        $currentDate = Carbon::now()->translatedFormat('l, Y-m-d');
+
         return view('dashboard', [
             'title' => 'Dashboard',
             'active' => 'dashboard',
@@ -25,6 +28,7 @@ class DashboardController extends Controller
             'totalPenjualan' => Penjualan::sum('dp'),
             'totalPenjualanBulanIni' => Penjualan::whereMonth('created_at', Carbon::now()->month)->sum('dp'),
             'totalPenjualanHariIni' => Penjualan::whereDate('created_at', Carbon::today())->sum('dp'),
+            'currentDate' => $currentDate,
         ]);
     }
 
