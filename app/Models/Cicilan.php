@@ -10,7 +10,7 @@ class Cicilan extends Model
     use HasFactory;
     protected $table = 'cicilan';
     protected $primaryKey = 'id_cicilan';
-    protected $fillable = ['id_customer', 'id_penjualan', 'tenor', 'jatuh_tempo', 'tanggal_pembayaran', 'jumlah_cicilan', 'jumlah_pembayaran', 'status_cicilan'];
+    protected $fillable = ['id_customer', 'id_penjualan', 'tenor', 'jatuh_tempo', 'tanggal_pembayaran', 'jumlah_cicilan', 'jumlah_pembayaran', 'status_cicilan', 'bukti_pembayaran'];
 
     public function customer()
     {

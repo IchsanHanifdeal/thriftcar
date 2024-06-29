@@ -1,4 +1,42 @@
 @include('layouts.head')
+<style>
+    .custom-file-input {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .custom-file-label {
+        border: 1px solid #ced4da;
+        padding: .375rem .75rem;
+        width: 100%;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .custom-file {
+        position: relative;
+        width: 100%;
+        height: calc(1.5em + .75rem + 2px);
+    }
+
+    .custom-file::before {
+        content: 'Bukti Pembayaran';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        padding: .375rem .75rem;
+        pointer-events: none;
+        z-index: 1;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        background-color: #fff;
+    }
+</style>
 @include('layouts.aside')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -47,6 +85,7 @@
                                         <th>Jatuh Tempo</th>
                                         <th>Jumlah Pembayaran (Angsuran)</th>
                                         <th>Status Angsuran</th>
+                                        <th>Bukti Pembayaran</th>
                                         <th class="no-export">Opsi</th>
                                     </tr>
                                 </thead>
@@ -100,6 +139,38 @@
                                                     @endif
                                                 </td>
                                                 <td>{{ ucfirst($c->status_cicilan) }}</td>
+                                                <td>
+                                                    @if ($c->bukti_pembayaran)
+                                                        <button type="button" class="btn btn-primary btn-sm"
+                                                            data-toggle="modal"
+                                                            data-target="#modalBukti-{{ $c->id_cicilan }}"> Lihat Bukti
+                                                            Transfer</button>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="modalBukti-{{ $c->id_cicilan }}"
+                                                            tabindex="-1" role="dialog"
+                                                            aria-labelledby="modalPendudukLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="modalPendudukLabel">
+                                                                            Bukti transfer</h5>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">×</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <img src="{{ asset('storage/' . $c->bukti_pembayaran) }}"
+                                                                            class="img-fluid" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        <p>Tidak ada pembayaran</p>
+                                                    @endif
+                                                </td>
                                                 @if ($role === 'customer')
                                                     <td>
                                                         @if ($c->status_cicilan === 'dibayar')
@@ -134,22 +205,33 @@
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
                                                                     </div>
-                                                                    <div class="modal-body">
-                                                                        Apakah anda akan bayar Cicilan tanggal
-                                                                        <b>{{ ucfirst($dueDate->locale('id')->isoFormat('D MMMM YYYY')) }}</b>?
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal">Tutup</button>
-                                                                        <form
-                                                                            action="{{ route('bayar_cicilan', ['id_cicilan' => $c->id_cicilan]) }}"
-                                                                            method="POST">
-                                                                            @csrf
-                                                                            @method('PUT')
+                                                                    <form
+                                                                        action="{{ route('bayar_cicilan', ['id_cicilan' => $c->id_cicilan]) }}"
+                                                                        method="POST" enctype="multipart/form-data">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        <div class="modal-body">
+                                                                            Apakah anda akan bayar Cicilan tanggal
+                                                                            <b>{{ ucfirst($dueDate->locale('id')->isoFormat('D MMMM YYYY')) }}</b>?
+
+                                                                            <div class="col-md-12 mt-3">
+                                                                                <div class="custom-file">
+                                                                                    <input type="file" name="bukti_pembayaran" id="gambarTambah" class="custom-file-input" onchange="previewImage(event, 'tambah')" required>
+                                                                                    <label class="custom-file-label" for="gambarTambah">Bukti Pembayaran</label>
+                                                                                </div>
+                                                                                <div class="mt-3">
+                                                                                    <img id="previewTambah" src="#" alt="Preview Gambar" class="img-fluid d-none" />
+                                                                                </div>
+                                                                            </div>                                                                   
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-dismiss="modal">Tutup</button>
                                                                             <button type="submit"
                                                                                 class="btn btn-success">Ya</button>
-                                                                        </form>
-                                                                    </div>
+                                                                        </div>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -167,9 +249,9 @@
                                                         @endif
 
                                                         <!-- Modal Terima -->
-                                                        <div class="modal fade" id="Modal-terima-{{ $c->id_cicilan }}"
-                                                            tabindex="-1" aria-labelledby="ModalTerimaLabel"
-                                                            aria-hidden="true">
+                                                        <div class="modal fade"
+                                                            id="Modal-terima-{{ $c->id_cicilan }}" tabindex="-1"
+                                                            aria-labelledby="ModalTerimaLabel" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
@@ -186,7 +268,8 @@
                                                                         <b>{{ ucfirst($dueDate->locale('id')->isoFormat('D MMMM YYYY')) }}</b>?
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
+                                                                        <button type="button"
+                                                                            class="btn btn-secondary"
                                                                             data-dismiss="modal">Tutup</button>
                                                                         <form
                                                                             action="{{ route('terima_cicilan', ['id_cicilan' => $c->id_cicilan]) }}"
@@ -255,7 +338,38 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
 @include('layouts.footer')
+
+<script>
+    function previewImage(event, formType) {
+        var file = event.target.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var preview;
+                if (formType === 'tambah') {
+                    preview = document.getElementById('previewTambah');
+                    var label = document.querySelector('label[for="gambarTambah"]');
+                } else {
+                    preview = document.getElementById('previewEdit');
+                    var label = document.querySelector('label[for="gambarEdit"]');
+                }
+                preview.src = reader.result;
+                preview.classList.remove('d-none');
+                label.textContent = file.name;
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Update label text when file is selected
+    document.querySelector('#gambarTambah').addEventListener('change', function(event) {
+        var fileName = event.target.files[0].name;
+        var nextSibling = event.target.nextElementSibling;
+        nextSibling.innerText = fileName;
+    });
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

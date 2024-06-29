@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('tenor', ['3', '6', '9', '12', '24', '36']);
             $table->date('jatuh_tempo');
             $table->date('tanggal_pembayaran')->nullable();
+            $table->string('bukti_pembayaran')->nullable();
             $table->string('jumlah_cicilan');
             $table->string('jumlah_pembayaran')->nullable();
             $table->enum('status_cicilan', ['dibayar', 'belum lunas', 'menunggu validasi'])->default('belum lunas');
