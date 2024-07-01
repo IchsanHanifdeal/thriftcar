@@ -10,6 +10,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\ManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/dashboard/ubahpassword', [ProfilController::class, 'password'])->name('ubahpassword');
     Route::put('/dashboard/ubahpassword/ubah', [ProfilController::class, 'updatePassword'])->name('ubah_password');
+    
+    Route::get('/dashboard/management', [ManagementController::class, 'index'])->name('management_user');
+    Route::put('/dashboard/management/{id_user}', [ManagementController::class, 'update'])->name('update_role');
+
 });
 
 // Route::get('/dashboard/ubahprofil', [GalleryController::class, 'index'])->name('galery');

@@ -18,29 +18,29 @@
                     <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
                     <li class="nav-header">Home</li>
-                    @if ($role === 'admin')
-                    <li class="nav-item">
-                        <a href="{{ route('dashboard') }}"
-                            class="nav-link {{ $active === 'dashboard' ? ' active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                Dashboard
-                            </p>
-                        </a>
-                    </li>
+                    @if ($role === 'admin' || $role === 'pimpinan')
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard') }}"
+                                class="nav-link {{ $active === 'dashboard' ? ' active' : '' }}">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Dashboard
+                                </p>
+                            </a>
+                        </li>
                     @endif
-                    @if ($role === 'customer')
-                    <li class="nav-item">
-                        <a href="{{ route('dashboard') }}"
-                            class="nav-link {{ $active === 'dashboard' ? ' active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                Pembelian Mobil
-                            </p>
-                        </a>
-                    </li>
+                    @if ($role === 'customer' || $role === 'sales')
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard') }}"
+                                class="nav-link {{ $active === 'dashboard' ? ' active' : '' }}">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Pembelian Mobil
+                                </p>
+                            </a>
+                        </li>
                     @endif
-                    @if ($role === 'admin')
+                    @if ($role === 'admin' || $role === 'pimpinan')
                         <li class="nav-header">Data</li>
                         <li class="nav-item">
                             <a href="{{ route('customer') }}"
@@ -51,14 +51,18 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('mobil') }}" class="nav-link {{ $active === 'mobil' ? ' active' : '' }}">
-                                <i class="nav-icon fas fa-car"></i>
-                                <p>
-                                    Kelola Mobil
-                                </p>
-                            </a>
-                        </li>
+                    @endif
+                    @if ($role === 'admin' || $role === 'pimpinan' || $role === 'sales')
+                    <li class="nav-item">
+                        <a href="{{ route('mobil') }}" class="nav-link {{ $active === 'mobil' ? ' active' : '' }}">
+                            <i class="nav-icon fas fa-car"></i>
+                            <p>
+                                Kelola Mobil
+                            </p>
+                        </a>
+                    </li>
+                    @endif
+                    @if ($role === 'admin' || $role === 'pimpinan')
                         <li class="nav-header">Laporan</li>
                         <li class="nav-item">
                             <a href="{{ route('penjualan') }}"
@@ -123,6 +127,17 @@
                             </a>
                         </li>
                     @endif --}}
+                    @if ($role == 'admin')
+                        <li class="nav-item">
+                            <a href="{{ route('management_user') }}"
+                                class="nav-link {{ $active === 'management_user' ? ' active' : '' }}">
+                                <i class="nav-icon 	fas fa-users"></i>
+                                <p>
+                                    Kelola Pengguna
+                                </p>
+                            </a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a href="{{ route('ubahpassword') }}"
                             class="nav-link {{ $active === 'ubah_password' ? ' active' : '' }}">

@@ -44,7 +44,21 @@ class LoginController extends Controller
                 $request->session()->put('email', $user->nama_depan);
                 $request->session()->put('role', $user->role);
                 return redirect()->intended('dashboard')->with('success', 'Login berhasil!');
-            } elseif ($userRole == 'customer') {
+            }  elseif ($userRole == 'customer') {
+                $request->session()->regenerate();
+                $user = Auth::user();
+                $request->session()->put('id_user', $user->id_user);
+                $request->session()->put('email', $user->email);
+                $request->session()->put('role', $user->role);
+                return redirect()->intended('dashboard')->with('success', 'Login berhasil!');
+            } elseif ($userRole == 'pimpinan') {
+                $request->session()->regenerate();
+                $user = Auth::user();
+                $request->session()->put('id_user', $user->id_user);
+                $request->session()->put('email', $user->email);
+                $request->session()->put('role', $user->role);
+                return redirect()->intended('dashboard')->with('success', 'Login berhasil!');
+            } elseif ($userRole == 'sales') {
                 $request->session()->regenerate();
                 $user = Auth::user();
                 $request->session()->put('id_user', $user->id_user);
