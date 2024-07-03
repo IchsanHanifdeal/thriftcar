@@ -18,7 +18,7 @@
                     <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
                     <li class="nav-header">Home</li>
-                    @if ($role === 'admin' || $role === 'pimpinan')
+                    @if ($role === 'admin' || $role === 'pimpinan' || $role === 'sales')
                         <li class="nav-item">
                             <a href="{{ route('dashboard') }}"
                                 class="nav-link {{ $active === 'dashboard' ? ' active' : '' }}">
@@ -29,7 +29,7 @@
                             </a>
                         </li>
                     @endif
-                    @if ($role === 'customer' || $role === 'sales')
+                    @if ($role === 'customer')
                         <li class="nav-item">
                             <a href="{{ route('dashboard') }}"
                                 class="nav-link {{ $active === 'dashboard' ? ' active' : '' }}">
@@ -52,17 +52,29 @@
                             </a>
                         </li>
                     @endif
-                    @if ($role === 'admin' || $role === 'pimpinan' || $role === 'sales')
-                    <li class="nav-item">
-                        <a href="{{ route('mobil') }}" class="nav-link {{ $active === 'mobil' ? ' active' : '' }}">
-                            <i class="nav-icon fas fa-car"></i>
-                            <p>
-                                Kelola Mobil
-                            </p>
-                        </a>
-                    </li>
-                    @endif
                     @if ($role === 'admin' || $role === 'pimpinan')
+                        <li class="nav-item">
+                            <a href="{{ route('mobil') }}" class="nav-link {{ $active === 'mobil' ? ' active' : '' }}">
+                                <i class="nav-icon fas fa-car"></i>
+                                <p>
+                                    Kelola Mobil
+                                </p>
+                            </a>
+                        </li>
+                    @endif
+                    @if ($role === 'sales')
+                        <li class="nav-header">Data</li>
+                        <li class="nav-item">
+                            <a href="{{ route('mobil') }}"
+                                class="nav-link {{ $active === 'mobil' ? ' active' : '' }}">
+                                <i class="nav-icon fas fa-car"></i>
+                                <p>
+                                    Data Mobil
+                                </p>
+                            </a>
+                        </li>
+                    @endif
+                    @if ($role === 'admin' || $role === 'pimpinan' || $role === 'sales')
                         <li class="nav-header">Laporan</li>
                         <li class="nav-item">
                             <a href="{{ route('penjualan') }}"
@@ -73,6 +85,8 @@
                                 </p>
                             </a>
                         </li>
+                    @endif
+                    @if ($role === 'admin' || $role === 'pimpinan')
                         <li class="nav-item">
                             <a href="{{ route('cicilan') }}"
                                 class="nav-link {{ $active === 'cicilan' ? ' active' : '' }}">

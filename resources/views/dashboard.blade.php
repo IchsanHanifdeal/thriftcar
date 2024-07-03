@@ -1,6 +1,6 @@
 @include('layouts.head')
 @include('layouts.aside')
-@if ($role === 'customer' || $role === 'sales')
+@if ($role === 'customer')
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-@elseif ($role === 'admin' || $role === 'pimpinan')
+@elseif ($role === 'admin' || $role === 'pimpinan' || $role === 'sales')
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <div class="content-header">
