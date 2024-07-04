@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('dp')->nullable();
             $table->date('tanggal_transaksi');
             $table->enum('cara_pembayaran', ['cash', 'kredit']);
-            $table->enum('status_pembayaran', ['lunas', 'kredit']);
+            $table->enum('status_pembayaran', ['lunas', 'kredit', 'ditarik']);
             $table->timestamps();
         });
     }

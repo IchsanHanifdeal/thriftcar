@@ -3,26 +3,26 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     @if ($role === 'admin' || $role === 'pimpinan' || $role === 'sales')
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">{{ $title }}</h1>
-                </div><!-- /.col -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">{{ $title }}</h1>
+                    </div><!-- /.col -->
+                </div>
             </div>
         </div>
-    </div>
     @endif
     @if ($role === 'customer')
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Pembelian</h1>
-                </div><!-- /.col -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Pembelian</h1>
+                    </div><!-- /.col -->
+                </div>
             </div>
         </div>
-    </div>
     @endif
 
     <!-- Main content -->
@@ -33,14 +33,14 @@
                 <div class="col-lg-12">
                     <div class="card">
                         @if ($role === 'admin')
-                        <div class="card-header">
-                            <h3 class="card-title">Kelola Data {{ $title }}</h3>
-                        </div>
+                            <div class="card-header">
+                                <h3 class="card-title">Kelola Data {{ $title }}</h3>
+                            </div>
                         @endif
                         @if ($role === 'customer')
-                        <div class="card-header">
-                            <h3 class="card-title">Kelola Data Pembelian</h3>
-                        </div>
+                            <div class="card-header">
+                                <h3 class="card-title">Kelola Data Pembelian</h3>
+                            </div>
                         @endif
                         <div class="card-body">
                             <table id="example2" class="table table-bordered table-hover">
@@ -53,8 +53,8 @@
                                         <th>Cara Pembayaran</th>
                                         <th>Status Pembayaran</th>
                                         <th>Total Transaksi</th>
-                                        @if ($role === 'admin')
-                                        <th>Opsi</th>
+                                        @if ($role === 'admin' || $role === 'pimpinan')
+                                            <th>Opsi</th>
                                         @endif
                                     </tr>
                                 </thead>
@@ -68,19 +68,62 @@
                                         @foreach ($penjualan as $key => $p)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ ucfirst($p->customer->nama_lengkap)}}</td>
-                                                <td>{{ ucfirst($p->mobil->nama_mobil) . ' type ' . $p->mobil->tipe_mobil}}</td>
+                                                <td>{{ ucfirst($p->customer->nama_lengkap) }}</td>
+                                                <td>{{ ucfirst($p->mobil->nama_mobil) . ' type ' . $p->mobil->tipe_mobil }}
+                                                </td>
                                                 <td>{{ ucfirst($p->tanggal_transaksi) }}</td>
                                                 <td>{{ ucfirst($p->cara_pembayaran) }}</td>
                                                 <td>{{ ucfirst($p->status_pembayaran) }}</td>
                                                 <td>{{ 'Rp ' . number_format($p->mobil->harga, 0, '', '.') }}</td>
                                                 <!-- Delete Button -->
-                                                @if ($role === 'admin')
-                                                    
-                                                <td><button type="button" class="btn btn-danger btn-sm"
-                                                        data-toggle="modal"
-                                                        data-target="#modal-hapus-{{ $p->id_penjualan }}"><i
-                                                            class="fas fa-trash"></i></button></td>
+                                                @if ($role === 'admin' || $role === 'pimpinan')
+                                                    <td><button type="button" class="btn btn-danger btn-sm"
+                                                            data-toggle="modal"
+                                                            data-target="#modal-hapus-{{ $p->id_penjualan }}"><i
+                                                                class="fas fa-trash"></i></button>
+
+                                                        @if ($p->status_pembayaran === 'kredit' && $p->cara_pembayaran === 'kredit')
+                                                            | <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                                                data-target="#modal-tarik-{{ $p->id_penjualan }}"><i
+                                                                    class="fas fa-ban"></i></button>
+
+                                                            <div class="modal fade"
+                                                                id="modal-tarik-{{ $p->id_penjualan }}" tabindex="-1"
+                                                                role="dialog" aria-labelledby="modal-hapusLabel"
+                                                                aria-hidden="true">
+                                                                <div class="modal-dialog" role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="modal-hapusLabel">
+                                                                                Konfirmasi Penarikan Mobil </h5>
+                                                                            <button type="button" class="close"
+                                                                                data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">×</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            Apakah anda akan menarik mobil
+                                                                            <b>{{ $p->customer->nama_lengkap }}</b>?
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-dismiss="modal">Tutup</button>
+                                                                            <form
+                                                                                action="{{ route('tarik_penjualan', ['id_penjualan' => $p->id_penjualan]) }}"
+                                                                                method="POST">
+                                                                                @csrf
+                                                                                @method('PUT')
+                                                                                <button type="submit" class="btn btn-danger">Ya</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    </td>
+                                                @endif
 
                                                 <!-- Modal Hapus -->
                                                 <div class="modal fade" id="modal-hapus-{{ $p->id_penjualan }}"
@@ -116,7 +159,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                @endif
                                             </tr>
                                         @endforeach
                                     @endif

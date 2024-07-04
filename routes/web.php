@@ -43,6 +43,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/dashboard/mobil/update/{id_mobil}', [MobilController::class, 'update'])->name('update_mobil');
 
     Route::get('/dashboard/penjualan', [PenjualanController::class, 'index'])->name('penjualan');
+    Route::put('/dashboard/penjualan/{id_penjualan}', [PenjualanController::class, 'tarik'])->name('tarik_penjualan');
     Route::delete('/dashboard/penjualan/{id_penjualan}', [PenjualanController::class, 'destroy'])->name('hapus_penjualan');
 
     Route::get('/dashboard/cicilan', [CicilanController::class, 'index'])->name('cicilan');

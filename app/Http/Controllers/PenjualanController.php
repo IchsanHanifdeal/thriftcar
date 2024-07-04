@@ -195,16 +195,28 @@ class PenjualanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Penjualan $penjualan)
+    public function tarik(Request $request, $id_penjualan)
     {
-        //
+        $penjualan = Penjualan::findorfail($id_penjualan);
+
+        $penjualan->update([
+            'status_pembayaran' => 'ditarik',
+        ]);
+
+        Cicilan::where('id_penjualan', $id_penjualan)->delete();
+
+        return redirect()->back()->with('success', 'Mobil berhasil ditarik');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Penjualan $penjualan)
+    public function destroy(Request $request, $id_penjualan)
     {
-        //
+        $penjualan = Penjualan::findOrFail($id_penjualan);
+        
+        $penjualan->delete();
+        
+        return redirect()->back()->with('success', 'Mobil berhasil dihapus');
     }
 }
