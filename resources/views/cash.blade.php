@@ -39,91 +39,102 @@
                 <!-- /.row -->
 
                 <!-- Info row -->
-                <div class="row invoice-info">
-                    <div class="col-sm-4 invoice-col">
-                        <img src="{{ asset('storage/' . $mobil->gambar) }}" class="card-img-top" />
-                    </div>
-                    <div class="col-sm-4 invoice-col">
-                        <div class="form-group">
-                            <label for="check-in-date">Tanggal Pembelian</label>
-                            <input type="date" class="form-control" id="tanggal_pembelian" name="tanggal_pembelian"
-                                value="{{ date('Y-m-d') }}" readonly>
+                <form action="{{ route('payment_cash', ['id_mobil' => $mobil->id_mobil]) }}" method="POST">
+                    @csrf
+                    <div class="row invoice-info">
+                        <div class="col-sm-4 invoice-col">
+                            <img src="{{ asset('storage/' . $mobil->gambar) }}" class="card-img-top" />
+                        </div>
+                        <div class="col-sm-4 invoice-col">
+                            <div class="form-group">
+                                <label for="check-in-date">Tanggal Pembelian</label>
+                                <input type="date" class="form-control" id="tanggal_pembelian"
+                                    name="tanggal_pembelian" value="{{ date('Y-m-d') }}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="check-in-date">Pilih Rekomendasi Sales (Jika ada)</label>
+                                <select class="form-control" id="sales" name="id_user">
+                                    <option value="">--- Pilih Sales ---</option>
+                                    @foreach ($sales as $i => $item)
+                                        <option value="{{ $item->id_user }}">{{ $item->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- /.row -->
+                    <!-- /.row -->
 
-                <!-- Customer data row -->
-                <div class="row">
-                    <div class="col-12 table-responsive mt-4">
-                        <h4>Data Pembeli</h4>
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <th>Nama Lengkap:</th>
-                                    <td>{{ $customer->nama_lengkap }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Tempat/Tanggal Lahir</th>
-                                    <td>{{ $customer->tempat . '/' . $customer->tanggal_lahir }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Nomor HP/Telpon:</th>
-                                    <td>{{ $customer->no_handphone }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Pekerjaan:</th>
-                                    <td>{{ $customer->pekerjaan }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- /.row -->
-
-                <!-- Payment details row -->
-                <div class="row">
-                    <div class="col-6">
-                        <p class="lead">Payment Methods:</p>
-                        <img src="{{ asset('imgs/credit/visa.png') }}" alt="Visa">
-                        <img src="{{ asset('imgs/credit/mastercard.png') }}" alt="Mastercard">
-                        <img src="{{ asset('imgs/credit/american-express.png') }}" alt="American Express">
-                        <img src="{{ asset('imgs/credit/paypal2.png') }}" alt="Paypal">
-
-                        <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango
-                            imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-                        </p>
-                    </div>
-
-                    <div class="col-6">
-                        <div class="table-responsive mt-4">
+                    <!-- Customer data row -->
+                    <div class="row">
+                        <div class="col-12 table-responsive mt-4">
+                            <h4>Data Pembeli</h4>
                             <table class="table">
-                                <tr>
-                                    <th>Tanggal Terkini:</th>
-                                    <td>{{ date('Y-m-d') }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Biaya Lainnya:</th>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <th>Biaya Mobil</th>
-                                    <td>{{ 'Rp ' . number_format($mobil->harga, 0, '', '.') }}</td>
-                                </tr>
-                                <tr>
-                                    <th style="width:50%">Total Tagihan:</th>
-                                    <td>{{ 'Rp ' . number_format($mobil->harga, 0, '', '.') }}</td>
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <th>Nama Lengkap:</th>
+                                        <td>{{ $customer->nama_lengkap }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tempat/Tanggal Lahir</th>
+                                        <td>{{ $customer->tempat . '/' . $customer->tanggal_lahir }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nomor HP/Telpon:</th>
+                                        <td>{{ $customer->no_handphone }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Pekerjaan:</th>
+                                        <td>{{ $customer->pekerjaan }}</td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
-                </div>
-                <!-- /.row -->
+                    <!-- /.row -->
 
-                <!-- Submit button -->
-                <form action="{{ route('payment_cash', ['id_mobil' => $mobil->id_mobil]) }}" method="POST">
-                    @csrf
+                    <!-- Payment details row -->
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="lead">Payment Methods:</p>
+                            <img src="{{ asset('imgs/credit/visa.png') }}" alt="Visa">
+                            <img src="{{ asset('imgs/credit/mastercard.png') }}" alt="Mastercard">
+                            <img src="{{ asset('imgs/credit/american-express.png') }}" alt="American Express">
+                            <img src="{{ asset('imgs/credit/paypal2.png') }}" alt="Paypal">
+
+                            <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya
+                                handango
+                                imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+                            </p>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="table-responsive mt-4">
+                                <table class="table">
+                                    <tr>
+                                        <th>Tanggal Terkini:</th>
+                                        <td>{{ date('Y-m-d') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Biaya Lainnya:</th>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Biaya Mobil</th>
+                                        <td>{{ 'Rp ' . number_format($mobil->harga, 0, '', '.') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:50%">Total Tagihan:</th>
+                                        <td>{{ 'Rp ' . number_format($mobil->harga, 0, '', '.') }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+
+                    <!-- Submit button -->
+
                     <div class="row no-print">
                         <div class="col-12">
                             <div class="form-check mb-3">

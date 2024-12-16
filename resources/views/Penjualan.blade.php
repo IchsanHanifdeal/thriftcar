@@ -69,7 +69,7 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ ucfirst($p->customer->nama_lengkap) }}</td>
-                                                <td>{{ ucfirst($p->mobil->nama_mobil) . ' type ' . $p->mobil->tipe_mobil }}
+                                                <td>{{ ucfirst($p->mobil->nama_mobil) . ' type ' . $p->mobil->tipe_mobil . ' warna ' . $p->mobil->warna}}
                                                 </td>
                                                 <td>{{ ucfirst($p->tanggal_transaksi) }}</td>
                                                 <td>{{ ucfirst($p->cara_pembayaran) }}</td>

@@ -65,19 +65,25 @@
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead class="text-center">
                                     <tr>
-                                        <th>No</th>
-                                        <th>Gambar Mobil</th>
-                                        <th>Nama Mobil</th>
-                                        <th>Merk Mobil</th>
-                                        <th>Warna</th>
-                                        <th>Transmisi</th>
-                                        <th>Stok</th>
-                                        <th>Harga</th>
+                                        <th rowspan="2" class="align-middle">No</th>
+                                        <th rowspan="2" class="align-middle">Gambar Mobil</th>
+                                        <th rowspan="2" class="align-middle">Nama Mobil</th>
+                                        <th rowspan="2" class="align-middle">Merk Mobil</th>
+                                        <th rowspan="2" class="align-middle">Warna</th>
+                                        <th rowspan="2" class="align-middle">Transmisi</th>
+                                        <th rowspan="2" class="align-middle">Stok</th>
+                                        <th colspan="4" class="align-middle">Harga</th>
                                         @if ($role === 'admin' || $role === 'pimpinan')
-                                            <th>Opsi</th>
+                                            <th rowspan="2" class="align-middle">Opsi</th>
                                         @endif
                                     </tr>
-                                </thead>
+                                    <tr>
+                                        <th class="align-middle">Cash</th>
+                                        <th class="align-middle">Kredit 1 Tahun</th>
+                                        <th class="align-middle">Kredit 2 Tahun</th>
+                                        <th class="align-middle">Kredit 3 Tahun</th>
+                                    </tr>
+                                </thead>                                
                                 <tbody class="text-center">
                                     @if ($mobil->isEmpty())
                                         <tr>
@@ -123,6 +129,12 @@
                                                 <td>{{ ucfirst($m->transmisi) }}</td>
                                                 <td>{{ $m->stok }}</td>
                                                 <td>{{ 'Rp ' . number_format($m->harga, 0, '', '.') }}</td>
+                                                <td>Rp {{ number_format($m->harga_kredit['12_bulan'], 0, ',', '.') }}
+                                                </td>
+                                                <td>Rp {{ number_format($m->harga_kredit['24_bulan'], 0, ',', '.') }}
+                                                </td>
+                                                <td>Rp {{ number_format($m->harga_kredit['36_bulan'], 0, ',', '.') }}
+                                                </td>
                                                 @if ($role === 'pimpinan' || $role === 'admin')
                                                     <td><button type="button" class="btn btn-warning btn-sm"
                                                             data-toggle="modal"
@@ -179,7 +191,8 @@
                                                                                     <select name="warna"
                                                                                         id="warna"
                                                                                         class="form-control">
-                                                                                        <option value="">--- Pilih
+                                                                                        <option value="">---
+                                                                                            Pilih
                                                                                             Warna Mobil ---</option>
                                                                                         <option value="merah"
                                                                                             {{ $m->warna == 'merah' ? 'selected' : '' }}>

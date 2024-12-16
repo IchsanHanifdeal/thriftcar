@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreign('id_mobil')->references('id_mobil')->on('mobil')->onDelete('cascade');
             $table->string('dp')->nullable();
             $table->date('tanggal_transaksi');
+            $table->unsignedBigInteger('id_user')->nullable();
+            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
             $table->enum('cara_pembayaran', ['cash', 'kredit']);
             $table->enum('status_pembayaran', ['lunas', 'kredit', 'ditarik']);
             $table->timestamps();

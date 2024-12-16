@@ -79,6 +79,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama Customer</th>
+                                        <th>Tipe Kendaraan</th>
                                         <th>Tenor</th>
                                         <th>Total Kredit</th>
                                         <th>Tanggal Pembayaran</th>
@@ -100,6 +101,7 @@
                                             <tr data-customer="{{ ucfirst($c->customer->nama_lengkap) }}">
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ ucfirst($c->customer->nama_lengkap) }}</td>
+                                                <td>{{ ucfirst($c->penjualan->mobil->nama_mobil . ' ' .  $c->penjualan->mobil->tipe_mobil . ' ' . $c->penjualan->mobil->warna) }}</td>
                                                 @php
                                                     $tenorInYears = floor($c->tenor / 12);
                                                     $remainingMonths = $c->tenor % 12;
@@ -236,7 +238,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                @elseif ($role === 'admin')
+                                                @elseif ($role === 'admin' || $role === 'sales')
                                                     <td>
                                                         @if ($c->status_cicilan === 'dibayar')
                                                             <i class="fas fa-check-circle text-success"></i>

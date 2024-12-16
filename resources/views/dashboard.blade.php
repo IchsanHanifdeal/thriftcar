@@ -15,66 +15,76 @@
         <div class="content">
             <div class="container-fluid">
                 <div class="row d-flex justify-content-center">
-                    <!-- /.col-md-6 -->
                     <div class="col-lg-10">
                         <div class="card">
-
-                            <div class="container-fluid bg-trasparent my-4 p-3" style="position: relative;">
-                                <div class="row row-cols-1 row-cols-xs-2 row-cols-sm-2 row-cols-lg-4 g-3">
+                            <div class="container-fluid bg-transparent my-4 p-3" style="position: relative;">
+                                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                                     @foreach ($mobil as $key => $m)
-                                        <div class="col">
+                                        <div class="col mt-2 mb-2">
                                             <div class="card h-100 shadow-sm">
-                                                <img src="{{ asset('storage/' . $m->gambar) }}" class="card-img-top"
-                                                    alt="...">
+                                                <!-- Gambar Mobil -->
+                                                <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                                                    <img src="{{ asset('storage/' . $m->gambar) }}" 
+                                                         class="card-img-top w-100 h-100 object-fit-cover" 
+                                                         alt="{{ $m->nama_mobil }}">
+                                                </div>
+                                                
+                                                <!-- Informasi Mobil -->
                                                 <div class="card-body">
-                                                    <div class="clearfix mb-3"> <span
-                                                            class="float-start badge rounded-pill bg-primary">{{ ucfirst($m->nama_mobil) . ' ' . 'type' . ' ' . $m->tipe_mobil }}</span><br>
-                                                        <span class="float-end price-hp"><b>Harga :
-                                                            </b>{{ 'Rp ' . number_format($m->harga, 0, '', '.') }}</span>
+                                                    <div class="mb-3">
+                                                        <span class="badge rounded-pill bg-primary">
+                                                            {{ ucfirst($m->nama_mobil) . ' type ' . $m->tipe_mobil }}
+                                                        </span>
+                                                        <br>
+                                                        <span class="text-muted"><b>Harga:</b> {{ 'Rp ' . number_format($m->harga, 0, '', '.') }}</span>
                                                     </div>
+                                                    
                                                     <h5 class="card-title">
-                                                        <b> Merk : </b>{{ $m->merk_mobil }}<br>
-                                                        <b> Transmisi : </b>{{ $m->transmisi }}<br>
-                                                        <b> Warna : </b>{{ $m->warna }}<br>
-                                                        <b> Stok : </b>{{ $m->stok }}<br>
+                                                        <b>Merk:</b> {{ $m->merk_mobil }}<br>
+                                                        <b>Transmisi:</b> {{ $m->transmisi }}<br>
+                                                        <b>Warna:</b> {{ $m->warna }}<br>
+                                                        <b>Stok:</b> {{ $m->stok }}
                                                     </h5>
-                                                    <div class="text-center my-4">
-                                                        <a href="#"
-                                                            class="btn btn-success mt-3 {{ $m->stok == 0 ? 'disabled' : '' }}"
-                                                            id="buyButton-{{ $m->id_mobil }}">
-                                                            Beli Sekarang
-                                                        </a>
-
-                                                        <script>
-                                                            document.getElementById('buyButton-{{ $m->id_mobil }}').addEventListener('click', function() {
-                                                                Swal.fire({
-                                                                    title: 'Pilih Metode Pembayaran',
-                                                                    icon: 'question',
-                                                                    showCancelButton: true,
-                                                                    confirmButtonText: 'Cash',
-                                                                    cancelButtonText: 'Kredit'
-                                                                }).then((result) => {
-                                                                    if (result.isConfirmed) {
-                                                                        window.location.href = '{{ route('cash', ['id_mobil' => $m->id_mobil]) }}';
-                                                                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                                                                        window.location.href = '{{ route('kredit', ['id_mobil' => $m->id_mobil]) }}';
-                                                                    }
-                                                                });
-                                                            });
-                                                        </script>
-                                                    </div>
+                                                </div>
+        
+                                                <!-- Tombol Beli -->
+                                                <div class="card-footer bg-transparent border-0 text-center">
+                                                    <a href="#" 
+                                                       class="btn btn-success w-100 {{ $m->stok == 0 ? 'disabled' : '' }}" 
+                                                       id="buyButton-{{ $m->id_mobil }}">
+                                                        Beli Sekarang
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
+        
+                                        <!-- Script untuk Metode Pembayaran -->
+                                        <script>
+                                            document.getElementById('buyButton-{{ $m->id_mobil }}').addEventListener('click', function() {
+                                                Swal.fire({
+                                                    title: 'Pilih Metode Pembayaran',
+                                                    icon: 'question',
+                                                    showCancelButton: true,
+                                                    confirmButtonText: 'Cash',
+                                                    cancelButtonText: 'Kredit'
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        window.location.href = '{{ route('cash', ['id_mobil' => $m->id_mobil]) }}';
+                                                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                                        window.location.href = '{{ route('kredit', ['id_mobil' => $m->id_mobil]) }}';
+                                                    }
+                                                });
+                                            });
+                                        </script>
                                     @endforeach
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
     </div>
 @elseif ($role === 'admin' || $role === 'pimpinan' || $role === 'sales')
     <div class="content-wrapper">

@@ -1,18 +1,22 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
+        <a href="{{ route('dashboard') }}" class="brand-link d-flex align-items-center">
             <img src="{{ asset('imgs/logo.png') }}" alt="{{ config('app.name') }}"
-                class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">{{ config('app.name') }}</span>
+                class="brand-image img-circle elevation-3" style="opacity: 0.8;">
+
+            <span class="brand-text font-weight-light text-wrap ms-2"
+                style="white-space: normal; overflow-wrap: break-word;">
+                {{ config('app.name') }}
+            </span>
         </a>
+
 
         <!-- Sidebar -->
         <div class="sidebar">
 
-
             <!-- Sidebar Menu -->
-            <nav class="mt-2">
+            <nav class="mt-4">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
@@ -51,10 +55,20 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sales') }}"
+                                class="nav-link {{ $active === 'sales' ? ' active' : '' }}">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Kelola Sales
+                                </p>
+                            </a>
+                        </li>
                     @endif
                     @if ($role === 'admin' || $role === 'pimpinan')
                         <li class="nav-item">
-                            <a href="{{ route('mobil') }}" class="nav-link {{ $active === 'mobil' ? ' active' : '' }}">
+                            <a href="{{ route('mobil') }}"
+                                class="nav-link {{ $active === 'mobil' ? ' active' : '' }}">
                                 <i class="nav-icon fas fa-car"></i>
                                 <p>
                                     Kelola Mobil
@@ -86,7 +100,18 @@
                             </a>
                         </li>
                     @endif
-                    @if ($role === 'admin' || $role === 'pimpinan')
+                    @if ($role === 'pimpinan')
+                        <li class="nav-item">
+                            <a href="{{ route('laporan_sales') }}"
+                                class="nav-link {{ $active === 'laporan_sales' ? ' active' : '' }}">
+                                <i class="nav-icon fas fa-chart-line"></i>
+                                <p>
+                                    Laporan Penjualan Sales
+                                </p>
+                            </a>
+                        </li>
+                    @endif
+                    @if ($role === 'admin' || $role === 'pimpinan' || $role === 'sales')
                         <li class="nav-item">
                             <a href="{{ route('cicilan') }}"
                                 class="nav-link {{ $active === 'cicilan' ? ' active' : '' }}">

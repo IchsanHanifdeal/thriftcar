@@ -53,6 +53,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/dashboard/gallery', [GalleryController::class, 'index'])->name('galery');
 
+    Route::get('/dashboard/laporan_sales', [PenjualanController::class, 'laporan_sales'])->name('laporan_sales');
+    
     Route::get('/dashboard/payment/cash/{id_mobil}', [PenjualanController::class, 'payment'])->name('cash');
     Route::post('/dashboard/payment/cash/payment/{id_mobil}', [PenjualanController::class, 'store_payment'])->name('payment_cash');
 
@@ -65,6 +67,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/dashboard/ubahpassword/ubah', [ProfilController::class, 'updatePassword'])->name('ubah_password');
     
     Route::get('/dashboard/management', [ManagementController::class, 'index'])->name('management_user');
+    Route::get('/dashboard/sales', [ManagementController::class, 'sales'])->name('sales');
     Route::put('/dashboard/management/{id_user}', [ManagementController::class, 'update'])->name('update_role');
 
 });

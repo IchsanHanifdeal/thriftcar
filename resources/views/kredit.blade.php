@@ -42,35 +42,87 @@
                 <form action="{{ route('payment_kredit', ['id_mobil' => $mobil->id_mobil]) }}" method="POST">
                     @csrf
                     <div class="row invoice-info">
+                        <!-- Image Section -->
                         <div class="col-sm-4 invoice-col">
-                            <img src="{{ asset('storage/' . $mobil->gambar) }}" class="card-img-top" />
+                            <div class="card shadow-sm">
+                                <img src="{{ asset('storage/' . $mobil->gambar) }}" class="card-img-top rounded"
+                                    alt="Mobil Image">
+                            </div>
                         </div>
-                        <div class="col-sm-4 invoice-col">
-                            <div class="form-group">
-                                <label for="check-in-date">Tanggal Pembelian</label>
-                                <input type="date" class="form-control" id="tanggal_pembelian"
-                                    name="tanggal_pembelian" value="{{ date('Y-m-d') }}" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="dp">Down Payment (DP)</label>
-                                <input type="number" class="form-control" id="dp" name="dp"
-                                    data-max="{{ $mobil->harga }}" data-min="{{ $mobil->harga * 0.1 }}" required>
-                                <small id="dpHelp" class="form-text text-muted">
-                                    Dp harus berada diantara
-                                    {{ 'Rp ' . number_format($mobil->harga * 0.1, 0, '', '.') }}
-                                    hingga {{ 'Rp ' . number_format($mobil->harga, 0, '', '.') }}.
-                                </small>
-                            </div>
-                            <div class="form-group">
-                                <label for="tenor">Tenor</label>
-                                <select name="tenor" id="tenor" class="form-control">
-                                    <option value="12">1 Tahun</option>
-                                    <option value="24">2 Tahun</option>
-                                    <option value="36">3 Tahun</option>
-                                </select>
+
+                        <!-- Form Section -->
+                        <div class="col-sm-8 invoice-col">
+                            <div class="card shadow-sm p-4">
+                                <div class="row">
+                                    <!-- Tanggal Pembelian & Down Payment -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-3">
+                                            <label for="tanggal_pembelian" class="font-weight-bold">Tanggal
+                                                Pembelian</label>
+                                            <input type="date" class="form-control" id="tanggal_pembelian"
+                                                name="tanggal_pembelian" value="{{ date('Y-m-d') }}" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-3">
+                                            <label for="dp" class="font-weight-bold">Down Payment (DP)</label>
+
+                                            <!-- Input untuk menampilkan format Rupiah dan bisa diedit -->
+                                            <input type="text" class="form-control @error('dp') is-invalid @enderror"
+                                                id="dp_display" name="dp_display"
+                                                value="{{ old('dp_display', 'Rp ' . number_format($mobil->harga * 0.1, 0, '', '.')) }}"
+                                                required>
+
+                                            <!-- Input tersembunyi untuk menyimpan nilai mentah -->
+                                            <input type="hidden" id="dp_raw" name="dp"
+                                                value="{{ old('dp') }}" required>
+
+                                            <!-- Menampilkan pesan error jika ada -->
+                                            @error('dp')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+
+                                            <small id="dpHelp" class="form-text text-muted">
+                                                DP minimal adalah
+                                                {{ 'Rp ' . number_format($mobil->harga * 0.1, 0, '', '.') }}.
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <!-- Tenor & Sales Recommendation -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-3">
+                                            <label for="tenor" class="font-weight-bold">Tenor (Kredit)</label>
+                                            <select name="tenor" id="tenor" class="form-control">
+                                                <option value="12">1 Tahun</option>
+                                                <option value="24">2 Tahun</option>
+                                                <option value="36">3 Tahun</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-3">
+                                            <label for="sales" class="font-weight-bold">Pilih Rekomendasi Sales (Jika
+                                                ada)</label>
+                                            <select class="form-control" id="sales" name="id_user">
+                                                <option value="">--- Pilih Sales ---</option>
+                                                @foreach ($sales as $item)
+                                                    <option value="{{ $item->id_user }}">{{ $item->nama }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
+
                     <!-- /.row -->
 
                     <!-- Customer data row -->
@@ -159,15 +211,47 @@
                         </div>
                     </div>
                 </form>
-                <!-- /.row -->
-
-                <!-- /.row -->
-
             </div>
         </div>
     </div>
 
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dpDisplay = document.getElementById('dp_display');
+        const dpRaw = document.getElementById('dp_raw');
+        const minDp = {{ $mobil->harga * 0.1 }}; // Nilai minimal DP
+
+        // Fungsi untuk format angka menjadi format Rupiah (termasuk simbol Rp)
+        const formatRupiah = (number) => {
+            return 'Rp ' + new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+            }).format(number).replace('Rp', '').trim(); // Hapus "Rp" dan trim spasi
+        };
+
+        // Menyimpan nilai mentah pada input tersembunyi saat ada perubahan
+        dpDisplay.addEventListener('input', function() {
+            let rawValue = dpDisplay.value.replace(/[^0-9]/g, ''); // Hapus karakter non-angka
+            rawValue = parseFloat(rawValue);
+
+            if (!isNaN(rawValue)) {
+                dpDisplay.value = formatRupiah(rawValue); // Tampilkan format Rupiah dengan "Rp"
+                dpRaw.value = rawValue; // Simpan nilai mentah pada input tersembunyi
+            }
+        });
+
+        // Set nilai DP default ke nilai minimal
+        dpDisplay.value = formatRupiah(minDp);
+
+        // Menambahkan atribut data untuk menyimpan nilai mentah saat blur
+        dpDisplay.addEventListener('blur', function() {
+            const rawValue = dpDisplay.value.replace(/[^0-9]/g, ''); // Nilai mentah tanpa titik/koma
+            dpRaw.value = rawValue; // Update nilai mentah pada input tersembunyi
+        });
+    });
+</script>
 @include('layouts.footer')
 
 <script>

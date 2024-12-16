@@ -14,13 +14,24 @@ class MobilController extends Controller
      */
     public function index(Request $request)
     {
+        $mobilData = Mobil::all();
+
+        $mobilData->each(function ($mobil) {
+            $mobil->harga_kredit = [
+                '12_bulan' => round($mobil->harga * 1.171, -4),
+                '24_bulan' => round($mobil->harga * 1.211, -4),
+                '36_bulan' => round($mobil->harga * 1.285, -4),
+            ];
+        });
+
         return view('mobil', [
             'title' => 'Mobil',
             'active' => 'mobil',
-            'mobil' => Mobil::all(),
+            'mobil' => $mobilData,
             'role' => $request->session()->get('role'),
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -101,7 +112,7 @@ class MobilController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id_mobil)
+    public function update(Request $request, $id_mobil)
     {
         $validator = Validator::make($request->all(), [
             'nama_mobil' => 'required',
@@ -156,13 +167,13 @@ class MobilController extends Controller
     public function destroy(Request $request, $id_mobil)
     {
         $mobil = Mobil::findOrFail($id_mobil);
-    
+
         if ($mobil->gambar) {
             Storage::delete('public/' . $mobil->gambar);
         }
-        
+
         $mobil->delete();
-        
+
         return redirect()->back()->with('success', 'Mobil berhasil dihapus');
     }
 }
